@@ -18,6 +18,6 @@
 FROM smartnimbus/was8.5.5.9-profile
 ARG warfile=hello-world
 COPY target/hello-world-war-*.war /tmp/hello-world.war
-ENV PORT 9443
-EXPOSE 9443
+#ENV PORT 9443
+#EXPOSE 9443
 RUN wsadmin.sh -lang jython -conntype NONE -c "AdminApp.install('/tmp/$warfile.war', '[ -appname $warfile -contextroot /$warfile -MapWebModToVH [[ $warfile.war $warfile.war,WEB-INF/web.xml default_host]]]')"

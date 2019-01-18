@@ -1,23 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-{{- if .Values.service.name }}
-  name: {{ .Values.service.name }}
-{{- else }}
-  name: {{ template "fullname" . }}
-{{- end }}
+  name: eks-jx-was-service
   labels:
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-{{- if .Values.service.annotations }}
-  annotations:
-{{ toYaml .Values.service.annotations | indent 4 }}
-{{- end }}
+    app: was
 spec:
-  type: {{ .Values.service.type }}
   ports:
-  - port: {{ .Values.service.externalPort }}
-    targetPort: {{ .Values.service.internalPort }}
+  - port: 9043
+    name: http-9043
     protocol: TCP
-    name: http
+  - port: 9443
+    name: http-9443
+    protocol: TCP
+  type: LoadBalancer
   selector:
-    app: {{ template "fullname" . }}
+        app: was
